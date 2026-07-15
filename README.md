@@ -33,3 +33,17 @@ The OU structure is modeled after Tranquilitics, a workplace stress intelligence
 - Domain Controller promotion
 - OU design and user management
 - Windows Server 2025 configuration
+
+## Group Policy Objects (GPOs)
+Created GPO: Tranquilitics-Security-Baseline applied to the Tranquilitics OU
+
+Password Policy (NIST-aligned):
+- Minimum password length: 13 characters
+- Maximum password age: 90 days
+- Minimum password age: 30 days
+- Password history: 10 passwords remembered
+- Complexity requirements: Enabled
+
+Screen Lock Policy:
+- Screen saver enabled with 10-minute timeout
+- Password required on screen saver resume
