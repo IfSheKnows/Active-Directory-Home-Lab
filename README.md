@@ -37,7 +37,7 @@ The OU structure is modeled after Tranquilitics, a workplace stress intelligence
 ## Group Policy Objects (GPOs)
 Created GPO: Tranquilitics-Security-Baseline applied to the Tranquilitics OU
 
-Password Policy (NIST-aligned):
+Password Policy (referencing NIST SP 800-63B):
 - Minimum password length: 13 characters
 - Maximum password age: 90 days
 - Minimum password age: 30 days
