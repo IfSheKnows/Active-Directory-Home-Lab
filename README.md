@@ -44,6 +44,11 @@ Password Policy (referencing NIST SP 800-63B):
 - Password history: 10 passwords remembered
 - Complexity requirements: Enabled
 
+Account Lockout Policy:
+- Lockout threshold: 5 invalid attempts
+- Lockout duration: 30 minutes
+- Reset counter after: 30 minutes
+- Administrator account lockout: Enabled
 Screen Lock Policy:
 - Screen saver enabled with 10-minute timeout
 - Password required on screen saver resume
