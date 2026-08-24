@@ -52,3 +52,24 @@ Account Lockout Policy:
 Screen Lock Policy:
 - Screen saver enabled with 10-minute timeout
 - Password required on screen saver resume
+
+## Network Reconnaissance & Log Analysis
+
+### Attack Simulation (Kali Linux)
+- Ran Nmap service version scan against the Domain Controller
+- Command: `nmap -sV 192.168.10.10`
+- Discovered 12 open ports, including DNS (53), Kerberos (88), LDAP (389), SMB (445), and WinRM (5985)
+- Nmap fingerprinted the domain as corp.local and identified the host as a Windows Domain Controller
+
+### Defender Response (Windows Server 2025)
+- Identified that Windows Filtering Platform auditing was not enabled by default
+- Enabled audit logging via PowerShell: 'auditpol /set /subcategory:"Filtering Platform Connection" /success:enable /failure:enable'
+- Re-ran Nmap scan and captured 107 Event ID 5156 entries in the Security log
+- Events confirmed source IP 192.168.10.20 (Kali) probing multiple ports in rapid succession
+- Identified lsass.exe involvement when Kali probed port 464 (Kerberos password change)
+
+### Key Concepts Demonstrated
+- Reconnaissance is the first step of an attack chain; Nmap is a standard tool for mapping attack surface
+- Windows does not log everything by default; audit policy must be deliberately configured
+- Event ID 5156 (Filtering Platform Connection) captures network-level reconnaissance
+- SIEM tools like Splunk correlate these events automatically in enterprise environments
