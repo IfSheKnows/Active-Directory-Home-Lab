@@ -73,3 +73,24 @@ Screen Lock Policy:
 - Windows does not log everything by default; audit policy must be deliberately configured
 - Event ID 5156 (Filtering Platform Connection) captures network-level reconnaissance
 - SIEM tools like Splunk correlate these events automatically in enterprise environments
+
+## Brute Force Attack Simulation & Detection
+
+### Attack Simulation (Kali Linux)
+- Used CrackMapExec to simulate a brute force credential attack against the Domain Controller
+- Targeted user account: pshava (Finance department)
+- Protocol: WinRM (port 5985)
+- Fired multiple failed authentication attempts using incorrect passwords
+
+### Defender Response (Windows Server 2025)
+- Enabled Logon auditing via PowerShell: `auditpol /set /subcategory:"Logon" /success:enable /failure:enable`
+- Captured 6 Event ID 4625 (Failed Logon) entries in the Security log
+- Events confirmed attacker source IP 192.168.10.20 (Kali), workstation name KALI, targeting corp.local\pshava
+- Logon Type 3 identified as a remote network logon attempt
+- Failure reason logged: Unknown user name or bad password
+
+### Key Concepts Demonstrated
+- Brute force attacks generate repeated 4625 events from the same source IP targeting the same account
+- Windows logs the attacker's IP, machine name, and targeted account automatically
+- Logon auditing must be explicitly enabled; it is not on by default
+- In enterprise environments, SIEM tools are able to correlate these events and fire automated alerts on this pattern.
