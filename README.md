@@ -89,6 +89,29 @@ Screen Lock Policy:
 - Logon Type 3 identified as a remote network logon attempt
 - Failure reason logged: Unknown user name or bad password
 
+## Successful Breach Simulation & Detection
+
+### Attack Simulation (Kali Linux)
+- Used CrackMapExec to authenticate successfully via WinRM after brute force attempts
+- Command: `crackmapexec winrm 192.168.10.10 -u pshava -p P@ssword123!`
+- Result: [+] corp.local\pshava:P@ssword123! (Pwn3d!)
+
+### Misconfigurations That Enabled the Breach
+- pshava (Finance department) was added to Remote Management Users group
+- Account had Elevated Token privileges despite being a non-IT user
+- Both represent violations of least privilege principle
+
+### Defender Response (Windows Server 2025)
+- Captured Event ID 4624 (Successful Logon) confirming the breach
+- Log showed: Account Name: pshava, Workstation Name: KALI, Source IP: 192.168.10.20
+- Logon Type 3 confirmed remote network authentication
+- Elevated Token: Yes flagged as additional misconfiguration
+
+### Key Concepts Demonstrated
+- A successful breach requires both valid credentials AND proper access permissions
+- Least privilege violations turn a stolen password into a full remote access incident
+- Event ID 4624 following a cluster of 4625s is a brute force success pattern
+- KALI workstation name and 192.168.10.20 source IP provide full attacker attribution
 ### Key Concepts Demonstrated
 - Brute force attacks generate repeated 4625 events from the same source IP targeting the same account
 - Windows logs the attacker's IP, machine name, and targeted account automatically
