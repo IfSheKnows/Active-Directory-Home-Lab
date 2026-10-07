@@ -117,3 +117,29 @@ Screen Lock Policy:
 - Windows logs the attacker's IP, machine name, and targeted account automatically
 - Logon auditing must be explicitly enabled; it is not on by default
 - In enterprise environments, SIEM tools are able to correlate these events and fire automated alerts on this pattern.
+
+## Post-Exploitation Enumeration
+
+### Tools Used
+- Evil-WinRM - interactive shell over WinRM from Kali into the Domain Controller
+
+### Actions Taken as Compromised User (pshava)
+- Established remote shell on DC: `evil-winrm -i 192.168.10.10 -u pshava -p P@ssword123!`
+- Confirmed identity: `corp\pshava`
+- Enumerated account privileges via `whoami /priv`
+- Pulled full AD account profile via `net user pshava /domain`
+- Identified sole Domain Admin account (Administrator)
+- Mapped WinRM-accessible accounts via `net localgroup "Remote Management Users"`
+- Dumped full domain user list via `net user /domain`
+
+### Key Findings
+- pshava had SeMachineAccountPrivilege - the ability to join rogue machines to the domain
+- Only one Domain Admin exists (Administrator) - target for privilege escalation
+- krbtgt account identified - high-value target for Golden Ticket attacks
+- All 14 Tranquilitics user accounts were enumerated and are available for password spraying
+
+### Key Concepts Demonstrated
+- Post-exploitation is about gathering information to move deeper into the network
+- A non-admin compromised account can still reveal critical domain intelligence
+- krbtgt compromise enables Golden Ticket attacks - permanent, undetectable domain access
+- Least privilege violations at the access level enable this entire attack chain
